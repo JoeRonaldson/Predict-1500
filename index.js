@@ -182,7 +182,7 @@ async function weeklyPrediction(fileName, maxes, mins, model) {
   dfd.toCSV(dfpredict, { filePath: './data/weekPredictions-Complete.csv' });
 }
 
-/* ---------- Main -------  --- */
+/* ---------- Main ---------- */
 async function run() {
   const trainName = './data/Predict-1500-clean Rev2.csv';
   const rd = await prepareTrainingSet(trainName); // ready data
