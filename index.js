@@ -159,7 +159,7 @@ async function weeklyPrediction(fileName, maxes, mins, model) {
   const dfpredict = await dfd.readCSV(fileName);
   const data = dfpredict.iloc({ columns: [`2:`] });
 
-  console.log(data.$columns);
+  //console.log(data.$columns);
 
   let twoK = [];
   for (let x = 0; x < data.$data.length; x++) {
@@ -177,7 +177,7 @@ async function weeklyPrediction(fileName, maxes, mins, model) {
     twoK.push(wattsToPace(twoKWatts));
   }
 
-  // adds column to data frame and print
+  // adds column to data frame and saves csv file with results
   dfpredict.addColumn('twoKPredictions', twoK, { inplace: true });
   dfd.toCSV(dfpredict, { filePath: './data/weekPredictions-Complete.csv' });
 }
