@@ -16,5 +16,5 @@ Check what branch were working on: git branch
 
 # TO DO
 
-- [ ] import and funcitons into index.js rather than have them all inside.
+- [x] Import funcitons as ES6 modules into index.js rather than have them all inside.
 - [ ] Instead of hard coding index's into functions, see if I can use a Vlookup type function to only input in the coloumns in the data set. Thus when my dataset has less column/features the code base should work with minial changeing. This will allow it to be used better with constructon data.
