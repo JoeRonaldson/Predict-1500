@@ -1,4 +1,4 @@
-import * as tf from '@tensorflow/tfjs-node';
+import * as tf from '@tensorflow/tfjs';
 import * as dfd from 'danfojs-node';
 import { unNorm, norm, wattsToPace, paceToWatts } from './utils.js';
 
@@ -96,7 +96,9 @@ function checkAccuracy(model, testX, testY, mins, maxes, testSize) {
     const results = model.predict(tester);
     const singleResult = results.arraySync()[0];
     const acca =
-      ((testY.arraySync()[testIndex] - singleResult) / testY.arraySync()[testIndex]) * 100;
+      ((testY.arraySync()[testIndex] - singleResult) /
+        testY.arraySync()[testIndex]) *
+      100;
     //console.log(acca.toFixed(2) + ' % error');
 
     const accaPositive = Math.sqrt(acca ** 2);
@@ -109,14 +111,26 @@ function checkAccuracy(model, testX, testY, mins, maxes, testSize) {
 }
 
 /* ---------- Make Single Prediction ---------- */
-function prediction(fifteenHun, fifteenHunRate, reps, weight, age, twokRate, maxes, mins, model) {
+function prediction(
+  fifteenHun,
+  fifteenHunRate,
+  reps,
+  weight,
+  age,
+  twokRate,
+  maxes,
+  mins,
+  model
+) {
   //Normalise Input
   const fifteenHunNorm = norm(maxes, mins, fifteenHun / fifteenHunRate, 2);
   const weightNorm = norm(maxes, mins, weight, 3);
   const ageNorm = norm(maxes, mins, age, 4);
   const repsNorm = norm(maxes, mins, reps, 5);
   // create tensor
-  const testTensor = tf.tensor([[fifteenHunNorm, weightNorm, ageNorm, repsNorm]]);
+  const testTensor = tf.tensor([
+    [fifteenHunNorm, weightNorm, ageNorm, repsNorm],
+  ]);
   // predict 2k
   const twokPredictionNorm = model.predict(testTensor); // in watts per stroke
   // unNorm
