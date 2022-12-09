@@ -56,13 +56,13 @@ function createModel(trainX) {
   model.add(
     tf.layers.dense({
       inputShape: [trainX.shape[1]],
-      units: 24,
+      units: 12,
       activation: 'relu',
       kernelInitializer: 'heNormal',
     })
   );
-  model.add(tf.layers.dense({ units: 24, activation: 'relu' }));
   model.add(tf.layers.dense({ units: 12, activation: 'relu' }));
+  model.add(tf.layers.dense({ units: 6, activation: 'relu' }));
   model.add(
     tf.layers.dense({
       units: 1,
