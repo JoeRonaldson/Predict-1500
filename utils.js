@@ -5,13 +5,17 @@
 /* ---------- Normaliseing Fuctions (Utility Functions)---------- */
 // Un-normalise x = y(max - min) + min;
 function unNorm(maxes, mins, value, index) {
-  const unNorm = value * (maxes['$data'][index] - mins['$data'][index]) + mins['$data'][index];
+  const unNorm =
+    value * (maxes['$data'][index] - mins['$data'][index]) +
+    mins['$data'][index];
   return unNorm;
 }
 
 // Un-normalise y = (x – min) / (max – min)
 function norm(maxes, mins, value, index) {
-  const norm = (value - mins['$data'][index]) / (maxes['$data'][index] - mins['$data'][index]);
+  const norm =
+    (value - mins['$data'][index]) /
+    (maxes['$data'][index] - mins['$data'][index]);
   return norm;
 }
 
@@ -30,6 +34,7 @@ function wattsToPace(watts) {
   return result;
 }
 
+// future function
 function paceToWatts() {}
 
 export { unNorm, norm, wattsToPace, paceToWatts };
