@@ -1,34 +1,17 @@
-import * as tf from '@tensorflow/tfjs';
+import * as tf from '@tensorflow/tfjs'; //import * as tf from '@tensorflow/tfjs-node' for better performance on laptop
 import * as dfd from 'danfojs-node';
 import { unNorm, norm, wattsToPace, paceToWatts } from './utils.js';
-import {
-  prepareTrainingSet,
-  createModel,
-  trainModel,
-  checkAccuracy,
-} from './modelCreation.js';
+import { prepareTrainingSet, createModel, trainModel, checkAccuracy } from './modelCreation.js';
 
 /* ---------- Make Single Prediction ---------- */
-function prediction(
-  fifteenHun,
-  fifteenHunRate,
-  reps,
-  weight,
-  age,
-  twokRate,
-  maxes,
-  mins,
-  model
-) {
+function prediction(fifteenHun, fifteenHunRate, reps, weight, age, twokRate, maxes, mins, model) {
   //Normalise Input
   const fifteenHunNorm = norm(maxes, mins, fifteenHun / fifteenHunRate, 2);
   const weightNorm = norm(maxes, mins, weight, 3);
   const ageNorm = norm(maxes, mins, age, 4);
   const repsNorm = norm(maxes, mins, reps, 5);
   // create tensor
-  const testTensor = tf.tensor([
-    [fifteenHunNorm, weightNorm, ageNorm, repsNorm],
-  ]);
+  const testTensor = tf.tensor([[fifteenHunNorm, weightNorm, ageNorm, repsNorm]]);
   // predict 2k
   const twokPredictionNorm = model.predict(testTensor); // in watts per stroke
   // unNorm
@@ -73,13 +56,13 @@ async function run() {
   const model = createModel(rd.trainX);
   model.summary();
 
-  const numEpochs = 50;
+  const numEpochs = 150;
   await trainModel(model, numEpochs, rd.trainX, rd.trainY, rd.testX, rd.testY);
 
   checkAccuracy(model, rd.testX, rd.testY, rd.mins, rd.maxes, rd.testSize);
 
   // prediciton(1500 avg watts, rate, reps, wight, age, 2k Rate)
-  // const twoKWatts = prediction(300, 22, 12, 85, 24, 34, rd.maxes, rd.mins, model);
+  // const twoKWatts = prediction(130, 22, 10, 73, 24, 32, rd.maxes, rd.mins, model);
   // console.log(wattsToPace(twoKWatts));
 
   const predictName = './data/weekPredictions.csv';

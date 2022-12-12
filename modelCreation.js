@@ -2,14 +2,15 @@
 // DESCRIPTION: Taking out the model creation and training from index.js and importing them in as a ES6 Module
 // TODO:
 
-import * as tf from '@tensorflow/tfjs'; // or import * as tf from '@tensorflow/tfjs-node' when on mac;
+import * as tf from '@tensorflow/tfjs'; //import * as tf from '@tensorflow/tfjs-node' for better performance on laptop
 import * as dfd from 'danfojs-node';
 
 /* ------------- Preparing the Data Set-------------- */
 async function prepareTrainingSet(fileName) {
   // Load the training CSV file as a data frame
-  const dfOG = await dfd.readCSV(fileName);
+  const dfOG1 = await dfd.readCSV(fileName);
   //console.log('Train Size', dfOG.shape[0]);
+  const dfOG = await dfOG1.sample(dfOG1.shape[0]); //shuffles the data
 
   // Stores the data frame's Mins and Maxes of each column
   const mins = dfOG.min({ axis: 0 });
@@ -56,7 +57,7 @@ function createModel(trainX) {
   model.add(
     tf.layers.dense({
       inputShape: [trainX.shape[1]],
-      units: 12,
+      units: 6,
       activation: 'relu',
       kernelInitializer: 'heNormal',
     })
@@ -75,7 +76,7 @@ function createModel(trainX) {
 
 /* ---------- Train the Model ---------- */
 async function trainModel(model, numEpochs, trainX, trainY, testX, testY) {
-  const learningRate = 0.001;
+  const learningRate = 0.0005;
   model.compile({
     optimizer: tf.train.adam(learningRate),
     loss: 'meanSquaredError',
@@ -99,9 +100,7 @@ function checkAccuracy(model, testX, testY, mins, maxes, testSize) {
     const results = model.predict(tester);
     const singleResult = results.arraySync()[0];
     const acca =
-      ((testY.arraySync()[testIndex] - singleResult) /
-        testY.arraySync()[testIndex]) *
-      100;
+      ((testY.arraySync()[testIndex] - singleResult) / testY.arraySync()[testIndex]) * 100;
     //console.log(acca.toFixed(2) + ' % error');
 
     const accaPositive = Math.sqrt(acca ** 2);
