@@ -5,13 +5,17 @@
 /* ---------- Normaliseing Fuctions (Utility Functions)---------- */
 // Un-normalise x = y(max - min) + min;
 function unNorm(maxes, mins, value, index) {
-  const unNorm = value * (maxes['$data'][index] - mins['$data'][index]) + mins['$data'][index];
+  const unNorm =
+    value * (maxes['$data'][index] - mins['$data'][index]) +
+    mins['$data'][index];
   return unNorm;
 }
 
 // Un-normalise y = (x – min) / (max – min)
 function norm(maxes, mins, value, index) {
-  const norm = (value - mins['$data'][index]) / (maxes['$data'][index] - mins['$data'][index]);
+  const norm =
+    (value - mins['$data'][index]) /
+    (maxes['$data'][index] - mins['$data'][index]);
   return norm;
 }
 
@@ -30,6 +34,18 @@ function wattsToPace(watts) {
   return result;
 }
 
-function paceToWatts() {}
+// converts pace to watts (used GPT-3 to write this function)
+function paceToWatts(pace) {
+  // split pace into minutes and seconds
+  const [minutes, seconds] = pace.split(':');
+
+  // convert minutes and seconds to total number of seconds
+  const totalSeconds = parseInt(minutes) * 60 + parseFloat(seconds);
+
+  // calculate watts
+  const watts = 2.8 / Math.pow(totalSeconds / 500, 3);
+
+  return watts;
+}
 
 export { unNorm, norm, wattsToPace, paceToWatts };
