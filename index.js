@@ -1,4 +1,4 @@
-import * as tf from '@tensorflow/tfjs'; //import * as tf from '@tensorflow/tfjs-node' for better performance on laptop
+import * as tf from '@tensorflow/tfjs-node'; //import * as tf from '@tensorflow/tfjs-node' for better performance on laptop
 import * as dfd from 'danfojs-node';
 import { unNorm, norm, wattsToPace, paceToWatts } from './utils.js';
 import { prepareTrainingSet, createModel, trainModel, checkAccuracy } from './modelCreation.js';
