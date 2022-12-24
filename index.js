@@ -58,7 +58,7 @@ async function run() {
 
   const numEpochs = 150;
   await trainModel(model, numEpochs, rd.trainX, rd.trainY, rd.testX, rd.testY);
-
+  await model.save('file://./model');
   checkAccuracy(model, rd.testX, rd.testY, rd.mins, rd.maxes, rd.testSize);
 
   // prediciton(1500 avg watts, rate, reps, wight, age, 2k Rate)
