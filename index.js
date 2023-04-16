@@ -100,8 +100,7 @@ async function run() {
 
   checkAccuracy(model, rd.testX, rd.testY, rd.mins, rd.maxes, rd.testSize);
 
-  // prediciton(1500 avg watts, rate, reps, wight, age, 2k Rate)
-  const twoKWatts = prediction(130, 22, 10, 73, 24, 32, rd.maxes, rd.mins, model);
+  // const twoKWatts = prediction(130, 22, 10, 73, 24, 32, rd.maxes, rd.mins, model);
   // console.log(wattsToPace(twoKWatts));
 
   const predictName = './data/batchPredictions.csv';

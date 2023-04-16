@@ -1,23 +1,14 @@
-# Useful Git Commands
+# Predit-1500
 
-```
-Stage the changes: git add .
+This is the MVP code for a prediction app that takes in a number of features and outputs a predicted score. I use a machine learning regression model to do this.
 
- - Undo Stage: git reset .
+# Use Case
 
-Commit the changes: git commit -m "Your messege here"
+The use case for this code is to predict rowing 2,000m ergometer test times based off an athletes training scores, age and weight.
 
- - See what Git is doing at any time: git status
+The 2,000m (2k) ergometer (erg) test in rowing is the gold standard in measuring physiological performance in athletes. The test scores are used in the selection process and with experienced rowers can generally be linked with on the water rowing performace (this can be debated).
+Like any maximal effort test, few are done throughout the season due to the toll it can take on the body and the interuptions it causes to training. In a typical season an athlete may only do two 2k erg tests. Thus for a coach its can be hard to guage an athletes ability outside of certain times in the season.
 
- - Check what branch were working on: git branch
+The use case for this code solves the problem by using an atheletes score in a particular weekly training session to predict there potential 2k erg score.
 
-Push changes to the 'master' branch on GitHub: git push -u origin master
-```
-
-# TO DO
-
-- [x] Import funcitons as ES6 modules into index.js rather than have them all inside.
-- [x] Get Stackblitz working on my work laptop so I can develop at work.
-- [ ] Instead of hard coding index's into functions, see if I can use a Vlookup type function to only input in the coloumns in the data set. Thus when my dataset has less column/features the code base should work with minial changeing. This will allow it to be used better with constructon data.
-- [ ] Intergrate this into the ucd next.js app. Using the data from the api call to Ludum.
-- [ ]
+# How It Works
