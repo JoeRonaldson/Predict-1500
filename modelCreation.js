@@ -1,17 +1,24 @@
-// TITLE: Prepare Data, Create Model, Train Model & Check Accuracy of Model
-// DESCRIPTION: Taking out the model creation and training from index.js and importing them in as a ES6 Module
-// TODO:
+/**
 
-import * as tf from '@tensorflow/tfjs'; //import * as tf from '@tensorflow/tfjs-node' for better performance on laptop
+@fileOverview This module provides functionality for preparing the data set, creating, training, and checking the accuracy of a TensorFlow model for predicting rowing performance.
+@author Joe Ronaldson
+*/
+import * as tf from '@tensorflow/tfjs';
 import * as dfd from 'danfojs-node';
 
-/* ------------- Preparing the Data Set-------------- */
+/**
+
+Asynchronously prepares the training set from a given CSV file.
+@async
+@function
+@param {string} fileName - The path to the CSV file containing the input data.
+@returns {Promise<Object>} An object containing the training and test data sets, and their min and max values.
+*/
 async function prepareTrainingSet(fileName) {
   // Load the training CSV file as a data frame
   const dfOG1 = await dfd.readCSV(fileName);
   //console.log('Train Size', dfOG.shape[0]);
   const dfOG = await dfOG1.sample(dfOG1.shape[0]); //shuffles the data
-
   // Stores the data frame's Mins and Maxes of each column
   const mins = dfOG.min({ axis: 0 });
   const maxes = dfOG.max({ axis: 0 });
@@ -40,17 +47,23 @@ async function prepareTrainingSet(fileName) {
   const dft1 = await dfd.readCSV('./data/newTest.csv');
 
   // Split train into Xs (Features) and Ys (Labels)
-  const trainX = df1.iloc({ columns: [`2:`] }).tensor; // use columns: [`1:`] if no idex column
+  const trainX = df1.iloc({ columns: ['2:'] }).tensor; // use columns: [1:] if no idex column
   const trainY = df1['two-k'].tensor;
 
   // Split test into Xs (Features) and Ys (Labels)
-  const testX = dft1.iloc({ columns: [`2:`] }).tensor; // use columns: [`1:`] if no idex column
+  const testX = dft1.iloc({ columns: ['2:'] }).tensor; // use columns: [1:] if no idex column
   const testY = dft1.column('two-k').tensor;
 
   return { trainX, trainY, testX, testY, mins, maxes, testSize };
 }
 
-/* -------------- Create the model -------------- */
+/**
+
+Creates a sequential TensorFlow model.
+@function
+@param {tf.Tensor} trainX - The training input data.
+@returns {tf.Sequential} The created TensorFlow model.
+*/
 function createModel(trainX) {
   // Create a sequential model and set its parameters
   const model = tf.sequential();
@@ -74,7 +87,19 @@ function createModel(trainX) {
   return model;
 }
 
-/* ---------- Train the Model ---------- */
+/**
+
+Trains the TensorFlow model.
+@async
+@function
+@param {tf.Sequential} model - The TensorFlow model to train.
+@param {number} numEpochs - The number of epochs to train the model for.
+@param {tf.Tensor} trainX - The training input data.
+@param {tf.Tensor} trainY - The training output data.
+@param {tf.Tensor} testX - The testing input data.
+@param {tf.Tensor} testY - The testing output data.
+@returns {Promise<tf.History>} A promise that resolves with the training history of the model.
+*/
 async function trainModel(model, numEpochs, trainX, trainY, testX, testY) {
   const learningRate = 0.0005;
   model.compile({
@@ -82,7 +107,6 @@ async function trainModel(model, numEpochs, trainX, trainY, testX, testY) {
     loss: 'meanSquaredError',
     metrics: ['accuracy'],
   });
-
   // Train the model
   return await model.fit(trainX, trainY, {
     batchSize: 32,
@@ -91,10 +115,19 @@ async function trainModel(model, numEpochs, trainX, trainY, testX, testY) {
   });
 }
 
-/* -------------- Predict from the Model ---------------- */
+/**
+
+Checks the accuracy of the TensorFlow model using the test set.
+@function
+@param {tf.Sequential} model - The TensorFlow model to check the accuracy of.
+@param {tf.Tensor} testX - The testing input data.
+@param {tf.Tensor} testY - The testing output data.
+@param {Object} mins - The minimum values of each feature in the data set.
+@param {Object} maxes - The maximum values of each feature in the data set.
+@param {number} testSize - The size of the test set.
+*/
 function checkAccuracy(model, testX, testY, mins, maxes, testSize) {
   let sum = 0;
-
   for (let testIndex = 0; testIndex < testSize; testIndex++) {
     const tester = tf.tensor([testX.arraySync()[testIndex]]);
     const results = model.predict(tester);
