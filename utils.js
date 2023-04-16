@@ -1,25 +1,46 @@
-// TITLE: Utility Functions
-// DESCRIPTION: Taking out the utility functions from index.js and importing them in as a ES6 Module
-// TODO:
+/**
 
-/* ---------- Normaliseing Fuctions (Utility Functions)---------- */
-// Un-normalise x = y(max - min) + min;
+ * @fileOverview Taking out the utility functions from index.js and importing them in as an ES6 Module
+ * @author Joe Ronaldson
+ */
+
+/**
+ 
+ * Un-normalises a value given its min and max ranges.
+ * @function
+ * @param {Object} maxes - Object containing the maximum values.
+ * @param {Object} mins - Object containing the minimum values.
+ * @param {number} value - The value to un-normalise.
+ * @param {number} index - The index used to access min and max values in 'mins' and 'maxes' objects.
+ * @returns {number} The un-normalised value.
+ */
 function unNorm(maxes, mins, value, index) {
-  const unNorm =
-    value * (maxes['$data'][index] - mins['$data'][index]) +
-    mins['$data'][index];
+  const unNorm = value * (maxes['$data'][index] - mins['$data'][index]) + mins['$data'][index];
   return unNorm;
 }
 
-// Un-normalise y = (x – min) / (max – min)
+/**
+
+ * Normalises a value given its min and max ranges.
+ * @function
+ * @param {Object} maxes - Object containing the maximum values.
+ * @param {Object} mins - Object containing the minimum values.
+ * @param {number} value - The value to normalise.
+ * @param {number} index - The index used to access min and max values in 'mins' and 'maxes' objects.
+ * @returns {number} The normalised value.
+ */
 function norm(maxes, mins, value, index) {
-  const norm =
-    (value - mins['$data'][index]) /
-    (maxes['$data'][index] - mins['$data'][index]);
+  const norm = (value - mins['$data'][index]) / (maxes['$data'][index] - mins['$data'][index]);
   return norm;
 }
 
-/* ---------- watts to Pace conversion (Utility Functions)---------- */
+/**
+
+ * Converts watts to pace (time per 500 meters).
+ * @function
+ * @param {number} watts - The power in watts.
+ * @returns {string} The pace in the format "mm:ss.t", where mm is minutes, ss is seconds, and t is tenths of a second.
+ */
 function wattsToPace(watts) {
   const pace = Math.pow(2.8 / watts, 1 / 3) * 500; // seconds per 500m
 
@@ -34,7 +55,13 @@ function wattsToPace(watts) {
   return result;
 }
 
-// converts pace to watts (used GPT-3 to write this function)
+/**
+
+ * Converts pace (time per 500 meters) to watts.
+ * @function
+ * @param {string} pace - The pace in the format "mm:ss.t", where mm is minutes, ss is seconds, and t is tenths of a second.
+ * @returns {number} The power in watts.
+ */
 function paceToWatts(pace) {
   // split pace into minutes and seconds
   const [minutes, seconds] = pace.split(':');

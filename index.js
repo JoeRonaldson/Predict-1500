@@ -1,7 +1,7 @@
 /**
 
 @fileOverview This module provides functionality for predicting rowing performance based on various input factors.
-@author Joe Ronaldosn
+@author Joe Ronaldson
 */
 // import * as tf from '@tensorflow/tfjs-node';
 // import * as dfd from 'danfojs-node';
