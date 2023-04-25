@@ -27,6 +27,8 @@ A neural network model defined using TensorFlow's sequential API was used. It co
 
 The model produced an error of 20%. For the purpose of this MVP experiment, this was deemed a success and a proof of concept.
 
-### Conclusion
+### How to Improve
 
-A decision tree approach may lead to better results in the future as well as a larger data set.
+- Try Random Forests 
+- Try Gradient Boosted Trees
+- Increase size of Data Set
